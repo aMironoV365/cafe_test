@@ -35,9 +35,8 @@ class Order(models.Model):
 
     def calculate_total_price(self):
         """Метод для расчета общей стоимости заказа."""
-        self.total_price = sum(product.price for product in self.products.all())
+        if self.products.exists():  # Проверяем, есть ли продукты
+            self.total_price = sum(product.price for product in self.products.all())
+        else:
+            self.total_price = 0  # Если продуктов нет, стоимость равна 0
 
-    def save(self, *args, **kwargs):
-        """Переопределенный метод save для автоматического расчета total_price."""
-        self.calculate_total_price()  # Пересчитываем total_price перед сохранением
-        super().save(*args, **kwargs)  # Сохраняем объект

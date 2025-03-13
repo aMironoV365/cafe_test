@@ -12,22 +12,29 @@ from .forms import OrderForm
 
 
 class OrderList(ListView):
-    template_name = "orders/orders_list.html"
+    model = Order  # Указываем модель, данные которой будем отображать
+    template_name = "orders/orders_list.html"  # Указываем шаблон
+    context_object_name = "object_list"  # Имя переменной контекста (по умолчанию "object_list")
 
 
 class OrderCreate(CreateView):
     model = Order
     form_class = OrderForm
     template_name = "orders/order_create_form.html"
-    # success_url = reverse_lazy("orders:orders_list")
+    success_url = reverse_lazy("orders:order_list")
 
     def form_valid(self, form):
         """Обработка валидной формы."""
-        self.object = form.save(commit=False)
-        self.object.save()  # Сохраняем объект (вызовет метод save модели Order)
+        self.object = form.save(commit=False)  # Создаем объект, но не сохраняем в БД
+        self.object.save()  # Сохраняем объект, чтобы получить id
 
-        # Устанавливаем продукты (total_price будет пересчитан автоматически)
-        self.object.products.set(form.cleaned_data['products'])
+        # Сохраняем связи ManyToMany (продукты)
+        form.save_m2m()
+
+        # Пересчитываем total_price (вызовет метод save модели Order)
+        self.object.calculate_total_price()
+        self.object.save()
+
         return super().form_valid(form)
 
 
