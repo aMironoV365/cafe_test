@@ -33,13 +33,11 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='waiting')
 
+    def calculate_total_price(self):
+        """Метод для расчета общей стоимости заказа."""
+        self.total_price = sum(product.price for product in self.products.all())
+
     def save(self, *args, **kwargs):
-        if self.pk is None:  # Если объект создается впервые
-            self.total_price = 0  # Устанавливаем 0, чтобы избежать NULL
-
-        super().save(*args, **kwargs)  # Сохраняем объект, чтобы получить id
-
-        # После сохранения пересчитываем `total_price`, если есть продукты
-        if self.products.exists():
-            self.total_price = sum(product.price for product in self.products.all())
-            super().save(update_fields=["total_price"])
+        """Переопределенный метод save для автоматического расчета total_price."""
+        self.calculate_total_price()  # Пересчитываем total_price перед сохранением
+        super().save(*args, **kwargs)  # Сохраняем объект

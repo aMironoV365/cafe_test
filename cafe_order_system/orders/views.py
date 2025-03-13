@@ -22,15 +22,12 @@ class OrderCreate(CreateView):
     # success_url = reverse_lazy("orders:orders_list")
 
     def form_valid(self, form):
+        """Обработка валидной формы."""
         self.object = form.save(commit=False)
-        self.object.total_price = 0  # Устанавливаем 0 перед первым сохранением
-        self.object.save()  # Теперь у объекта есть id
+        self.object.save()  # Сохраняем объект (вызовет метод save модели Order)
 
-        # Устанавливаем продукты и пересчитываем `total_price`
+        # Устанавливаем продукты (total_price будет пересчитан автоматически)
         self.object.products.set(form.cleaned_data['products'])
-        self.object.total_price = sum(product.price for product in self.object.products.all())
-        self.object.save()
-
         return super().form_valid(form)
 
 
