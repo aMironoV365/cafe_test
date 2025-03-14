@@ -1,0 +1,36 @@
+{% extends 'orders/base.html' %}
+
+{% block title %}
+    Список заказов
+{% endblock %}
+{% block body %}
+    <h1>Список заказов</h1>
+    {% if object_list %}
+        <div>
+        {% for order in object_list %}
+            <div>
+                <p><a href="{% url 'orders:order_detail' pk=order.pk %}">Заказ №: {{ order.pk }}</a></p>
+                <p>Номер стола: {{ order.table_number }}</p>
+                <div>
+                    Продукты:
+                    <ul>
+                        {% for product in order.products.all %}
+                            <li>{{ product }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <p>Итоговая стоимость: {{ order.total_price }}</p>
+                <p>статус: {{ order.get_status_display }}</p>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>Заказов пока нет.</p>
+    {% endif %}
+        <div>
+        <a href="{% url "orders:order_create" %}"
+        >Создать новый заказ</a>
+        </div>
+
+{% endblock %}
+

@@ -12,15 +12,12 @@ from .forms import OrderForm
 
 
 class OrderList(ListView):
-    model = Order  # Указываем модель, данные которой будем отображать
-    template_name = "orders/orders_list.html"  # Указываем шаблон
-    context_object_name = "object_list"  # Имя переменной контекста (по умолчанию "object_list")
+    model = Order
 
 
 class OrderCreate(CreateView):
     model = Order
     form_class = OrderForm
-    template_name = "orders/order_create_form.html"
     success_url = reverse_lazy("orders:order_list")
 
     def form_valid(self, form):
@@ -39,12 +36,17 @@ class OrderCreate(CreateView):
 
 
 class OrderDetail(DetailView):
-    pass
+    queryset = Order.objects.prefetch_related("products")
 
 
 class OrderUpdate(UpdateView):
-    pass
+    model = Order
+    form_class = OrderForm
+    template_name = "orders/order_update.html"
+    success_url = reverse_lazy("orders:order_list")
 
 
-class OrderDelete(DetailView):
-    pass
+class OrderDelete(DeleteView):
+    model = Order
+    template_name = "orders/order_delete.html"
+    success_url = reverse_lazy("orders:order_list")
