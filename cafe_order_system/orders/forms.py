@@ -6,7 +6,7 @@ class OrderForm(forms.ModelForm):
     products = forms.ModelMultipleChoiceField(
         queryset=Product.objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        label="Выберите блюда"
+        label="Выберите блюда",
     )
 
     class Meta:

@@ -18,7 +18,7 @@ class OrderList(ListView):
 class OrderCreate(CreateView):
     model = Order
     form_class = OrderForm
-    template_name = 'orders/order_create_form.html'
+    template_name = "orders/order_create_form.html"
     success_url = reverse_lazy("orders:order_list")
 
     def form_valid(self, form):

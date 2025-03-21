@@ -23,15 +23,19 @@ class Product(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('waiting', 'В ожидании'),
-        ('ready', 'Готово'),
-        ('paid', 'Оплачено'),
+        ("waiting", "В ожидании"),
+        ("ready", "Готово"),
+        ("paid", "Оплачено"),
     ]
 
-    table_number = models.ForeignKey(Table, on_delete=models.CASCADE, related_name="orders", verbose_name="Стол")
+    table_number = models.ForeignKey(
+        Table, on_delete=models.CASCADE, related_name="orders", verbose_name="Стол"
+    )
     products = models.ManyToManyField(Product, related_name="orders")
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True, default=0)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='waiting')
+    total_price = models.DecimalField(
+        max_digits=10, decimal_places=2, blank=True, null=True, default=0
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="waiting")
 
     def calculate_total_price(self):
         """Метод для расчета общей стоимости заказа."""
@@ -39,4 +43,3 @@ class Order(models.Model):
             self.total_price = sum(product.price for product in self.products.all())
         else:
             self.total_price = 0  # Если продуктов нет, стоимость равна 0
-
