@@ -18,7 +18,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return f"{self.name} - {self.price} руб."
+        return f"{self.name} | {self.price} руб."
 
 
 class Order(models.Model):
@@ -35,7 +35,7 @@ class Order(models.Model):
     total_price = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True, default=0
     )
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="waiting")
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="waiting", verbose_name='статус')
 
     def calculate_total_price(self):
         """Метод для расчета общей стоимости заказа."""
