@@ -1,13 +1,13 @@
 {% extends 'orders/base.html' %}
 
 {% block title %}
-	Детали заказа: {{ object.pk }}
+	Детали заказа: {{ order_details.pk }}
 {% endblock %}
 
 {% block body %}
-	<h1>Детали заказа {{ object.pk }}</h1>
+	<h1>Детали заказа {{ order_details.pk }}</h1>
     <div>
-    <p>Номер стола: {{ object.table_number }}</p>
+    <p>Номер стола: {{ order_details.table_number }}</p>
     <div>
         Продукты:
         <ul>
@@ -20,10 +20,10 @@
     <p>Статус: {{ order.get_status_display }}</p>
     </div>
     <div>
-        <p></p><a href="{% url 'orders:order_update' pk=order.pk %}">Изменить заказ</a></p>
+        <p></p><a href="{% url 'orders:order_update' pk=order_details.pk %}">Изменить заказ</a></p>
     </div>
     <div>
-        <a href="{% url 'orders:order_delete' pk=order.pk %}">Удалить заказ</a>
+        <a href="{% url 'orders:order_delete' pk=order_details.pk %}">Удалить заказ</a>
     </div>
     <div>
         <a href="{% url "orders:order_list" %}"

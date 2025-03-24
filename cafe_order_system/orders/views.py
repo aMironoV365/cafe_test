@@ -13,10 +13,12 @@ from .forms import OrderForm
 
 class OrderList(ListView):
     model = Order
+    context_object_name = "order_list"
 
 
 class OrderCreate(CreateView):
     model = Order
+    context_object_name = "order_create"
     form_class = OrderForm
     template_name = "orders/order_create_form.html"
     success_url = reverse_lazy("orders:order_list")
@@ -38,10 +40,12 @@ class OrderCreate(CreateView):
 
 class OrderDetail(DetailView):
     queryset = Order.objects.prefetch_related("products")
+    context_object_name = "order_details"
 
 
 class OrderUpdate(UpdateView):
     model = Order
+    context_object_name = "order_update"
     form_class = OrderForm
     template_name = "orders/order_update.html"
     success_url = reverse_lazy("orders:order_list")
@@ -49,5 +53,6 @@ class OrderUpdate(UpdateView):
 
 class OrderDelete(DeleteView):
     model = Order
+    context_object_name = "order_delete"
     template_name = "orders/order_delete.html"
     success_url = reverse_lazy("orders:order_list")

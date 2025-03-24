@@ -1,10 +1,10 @@
 {% extends 'orders/base.html' %}
 
 {% block title %}
-	Редактирование заказа № {{ object.pk }}
+	Редактирование заказа № {{ order_update.pk }}
 {% endblock %}
 {% block body %}
-	<h1>Редактирование заказа № {{ object.pk }}</h1>
+	<h1>Редактирование заказа № {{ order_update.pk }}</h1>
     <div>
         <form action="" method="post">
             {% csrf_token %}
@@ -13,6 +13,6 @@
         </form>
     </div>
     <div><p>
-    <p><a href="{% url 'orders:order_detail' pk=object.pk %}">Назад к заказу №{{ object.pk }}</a></p>
+    <p><a href="{% url 'orders:order_detail' pk=order_update.pk %}">Назад к заказу №{{ order_update.pk }}</a></p>
     </div>
 {% endblock %}
