@@ -35,7 +35,10 @@ class Order(models.Model):
     total_price = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True, default=0
     )
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="waiting", verbose_name='статус')
+    status = models.CharField(
+        max_length=10, choices=STATUS_CHOICES, default="waiting", verbose_name="статус"
+    )
+    archived = models.BooleanField(default=False)
 
     def calculate_total_price(self):
         """Метод для расчета общей стоимости заказа."""

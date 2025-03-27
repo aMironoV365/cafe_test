@@ -5,9 +5,9 @@
 {% endblock %}
 {% block body %}
     <h1>Список заказов</h1>
-    {% if order_list %}
+    {% if object_list %}
         <div>
-        {% for order in order_list %}
+        {% for order in object_list %}
             <div>
                 <p><a href="{% url 'orders:order_detail' pk=order.pk %}">Заказ №: {{ order.pk }}</a></p>
                 <p>Номер стола: {{ order.table_number }}</p>

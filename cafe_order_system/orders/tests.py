@@ -3,14 +3,18 @@ from django.urls import reverse
 from .models import Order, Table, Product
 
 
-class OrderListViewTest(TestCase):
+class BaseTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.table = Table.objects.create(number=1, is_occupied=True)
         cls.product = Product.objects.create(name="Маргарита", price=500)
-        cls.order = Order.objects.create(status="waiting", table_number=cls.table)
+        cls.order = Order.objects.create(
+            status="waiting", table_number=cls.table, archived=False
+        )
         cls.order.products.add(cls.product)
 
+
+class OrderListViewTest(BaseTestCase):
     def test_order_list_view_status_code(self):
         response = self.client.get(reverse("orders:order_list"))
         self.assertEqual(response.status_code, 200)
@@ -50,14 +54,7 @@ class OrderListViewTest(TestCase):
         self.assertEqual(self.order.total_price, 500)
 
 
-class OrderCreateViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.table = Table.objects.create(number=1, is_occupied=True)
-        cls.product = Product.objects.create(name="Маргарита", price=500)
-        cls.order = Order.objects.create(status="waiting", table_number=cls.table)
-        cls.order.products.add(cls.product)
-
+class OrderCreateViewTest(BaseTestCase):
     def test_order_create_view_status_code(self):
         response = self.client.get(reverse("orders:order_create"))
         self.assertEqual(response.status_code, 200)
@@ -67,14 +64,7 @@ class OrderCreateViewTest(TestCase):
         self.assertTemplateUsed(response, "orders/order_create_form.html")
 
 
-class OrderDetailViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.table = Table.objects.create(number=1, is_occupied=True)
-        cls.product = Product.objects.create(name="Маргарита", price=500)
-        cls.order = Order.objects.create(status="waiting", table_number=cls.table)
-        cls.order.products.add(cls.product)
-
+class OrderDetailViewTest(BaseTestCase):
     def test_product_get(self):
         response = self.client.get(
             reverse("orders:order_detail", args=(self.order.id,))
@@ -98,14 +88,7 @@ class OrderDetailViewTest(TestCase):
         self.assertIn(self.product, response.context["order_details"].products.all())
 
 
-class OrderUpdateViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.table = Table.objects.create(number=1, is_occupied=True)
-        cls.product = Product.objects.create(name="Маргарита", price=500)
-        cls.order = Order.objects.create(status="waiting", table_number=cls.table)
-        cls.order.products.add(cls.product)
-
+class OrderUpdateViewTest(BaseTestCase):
     def test_update_view_statuscode(self):
         response = self.client.get(
             reverse("orders:order_update", args=(self.order.id,))
@@ -129,14 +112,7 @@ class OrderUpdateViewTest(TestCase):
         self.assertIn(self.product, response.context["order_update"].products.all())
 
 
-class OrderDeleteViewTest(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.table = Table.objects.create(number=1, is_occupied=True)
-        cls.product = Product.objects.create(name="Маргарита", price=500)
-        cls.order = Order.objects.create(status="waiting", table_number=cls.table)
-        cls.order.products.add(cls.product)
-
+class OrderDeleteViewTest(BaseTestCase):
     def test_delete_view_status_code(self):
         response = self.client.get(
             reverse("orders:order_delete", args=(self.order.id,))
@@ -158,10 +134,15 @@ class OrderDeleteViewTest(TestCase):
         self.assertEqual(response.context["order_delete"].status, "waiting")
         self.assertEqual(response.context["order_delete"].table_number, self.table)
         self.assertIn(self.product, response.context["order_delete"].products.all())
-    
+
     def test_delete_order_post_request(self):
         response = self.client.post(
             reverse("orders:order_delete", args=(self.order.id,))
         )
-        self.assertFalse(Order.objects.filter(id=self.order.id).exists())
+
+        # Обновляем объект из базы данных
+        self.order.refresh_from_db()
+
+        # Проверяем что заказ архивирован, а не удален
+        self.assertTrue(self.order.archived)
         self.assertRedirects(response, reverse("orders:order_list"))

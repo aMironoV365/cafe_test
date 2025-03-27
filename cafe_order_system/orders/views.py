@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -14,6 +15,7 @@ from .forms import OrderForm
 class OrderList(ListView):
     model = Order
     context_object_name = "order_list"
+    queryset = Order.objects.filter(archived=False)
 
 
 class OrderCreate(CreateView):
@@ -56,3 +58,9 @@ class OrderDelete(DeleteView):
     context_object_name = "order_delete"
     template_name = "orders/order_delete.html"
     success_url = reverse_lazy("orders:order_list")
+
+    def form_valid(self, form):
+        success_url = self.get_success_url()
+        self.object.archived = True
+        self.object.save()
+        return HttpResponseRedirect(success_url)
