@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 from rest_framework import viewsets
 from orders.models import Product
-from .seriallizers import ProductListSerializer
+from .serializers import ProductListSerializer
 
 
 class ProductViewSet(CacheResponseMixin, viewsets.ModelViewSet):
