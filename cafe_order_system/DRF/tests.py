@@ -5,9 +5,21 @@ from orders.models import Product
 
 @pytest.mark.django_db
 class TestProductAPI:
+    """
+    Набор тестов для API управления продуктами.
+
+    Использует фикстуру `api_client` для выполнения запросов к API.
+    """
 
     def test_create_product(self, api_client):
-        """Тест создания продукта"""
+        """
+        Тест создания продукта через POST-запрос к /api/products/
+
+        Проверяется:
+        - успешное создание продукта (код 201)
+        - продукт действительно сохраняется в базе
+        - имя продукта соответствует переданным данным
+        """
         url = reverse("product-list")
         data = {"name": "Новый продукт", "price": "250.00"}
 
@@ -18,7 +30,14 @@ class TestProductAPI:
         assert Product.objects.first().name == "Новый продукт"
 
     def test_get_product_list(self, api_client, product1, product2):
-        """Тест получения списка продуктов"""
+        """
+        Тест получения списка всех продуктов через GET-запрос к /api/products/
+
+        Проверяется:
+        - успешный ответ (код 200)
+        - количество продуктов в ответе
+        - корректность данных по каждому продукту
+        """
         url = reverse("product-list")
         response = api_client.get(url)
 
@@ -30,7 +49,13 @@ class TestProductAPI:
         assert data["results"][1]["name"] == "Чай"
 
     def test_get_single_product(self, api_client, product1):
-        """Тест получения одного продукта"""
+        """
+        Тест получения одного продукта по ID через GET-запрос к /api/products/<id>/
+
+        Проверяется:
+        - успешный ответ (код 200)
+        - корректность полученных данных по продукту
+        """
         url = reverse("product-detail", args=[product1.id])
         response = api_client.get(url)
 
@@ -40,7 +65,13 @@ class TestProductAPI:
         assert data["price"] == "150.00"
 
     def test_update_product(self, api_client, product1):
-        """Тест обновления продукта"""
+        """
+        Тест обновления продукта по ID через PUT-запрос к /api/products/<id>/
+
+        Проверяется:
+        - успешный ответ (код 200)
+        - изменения сохраняются в базе
+        """
         url = reverse("product-detail", args=[product1.id])
         updated_data = {"name": "Эспрессо", "price": "180.00"}
 
@@ -52,7 +83,13 @@ class TestProductAPI:
         assert str(product1.price) == "180.00"
 
     def test_delete_product(self, api_client, product1):
-        """Тест удаления продукта"""
+        """
+        Тест удаления продукта по ID через DELETE-запрос к /api/products/<id>/
+
+        Проверяется:
+        - успешный ответ (код 204)
+        - продукт удалён из базы
+        """
         url = reverse("product-detail", args=[product1.id])
         response = api_client.delete(url)
 
