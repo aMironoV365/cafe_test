@@ -1,0 +1,32 @@
+{% extends 'orders/base.html' %}
+
+{% block title %}
+	Детали заказа: {{ order_details.pk }}
+{% endblock %}
+
+{% block body %}
+	<h1>Детали заказа {{ order_details.pk }}</h1>
+    <div>
+    <p>Номер стола: {{ order_details.table_number }}</p>
+    <div>
+        Продукты:
+        <ul>
+            {% for product in order.products.all %}
+                <li>{{ product }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <p>Итоговая стоимость: {{ order.total_price }}</p>
+    <p>Статус: {{ order.get_status_display }}</p>
+    </div>
+    <div>
+        <p></p><a href="{% url 'orders:order_update' pk=order_details.pk %}">Изменить заказ</a></p>
+    </div>
+    <div>
+        <a href="{% url 'orders:order_delete' pk=order_details.pk %}">Удалить заказ</a>
+    </div>
+    <div>
+        <a href="{% url "orders:order_list" %}"
+        >Вернуться к списку заказов</a>
+    </div>
+{% endblock %}
