@@ -45,7 +45,7 @@ class Order(models.Model):
 
     def calculate_total_price(self):
         """Метод для расчета общей стоимости заказа."""
-        if self.products.exists():  # Проверяем, есть ли продукты
+        if self.products.exists():
             self.total_price = sum(product.price for product in self.products.all())
         else:
-            self.total_price = 0  # Если продуктов нет, стоимость равна 0
+            self.total_price = 0

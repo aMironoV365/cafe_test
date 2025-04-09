@@ -8,7 +8,7 @@ class TestProductAPI:
 
     def test_create_product(self, api_client):
         """Тест создания продукта"""
-        url = reverse("product-list")  # Эндпоинт для списка продуктов
+        url = reverse("product-list")
         data = {"name": "Новый продукт", "price": "250.00"}
 
         response = api_client.post(url, data, format="json")
@@ -24,8 +24,8 @@ class TestProductAPI:
 
         assert response.status_code == 200
         data = response.json()
-        assert data["count"] == 2  # Проверяем общее количество
-        assert len(data["results"]) == 2  # Проверяем количество элементов на странице
+        assert data["count"] == 2
+        assert len(data["results"]) == 2
         assert data["results"][0]["name"] == "Кофе"
         assert data["results"][1]["name"] == "Чай"
 

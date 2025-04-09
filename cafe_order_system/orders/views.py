@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -27,13 +26,11 @@ class OrderCreate(CreateView):
 
     def form_valid(self, form):
         """Обработка валидной формы."""
-        self.object = form.save(commit=False)  # Создаем объект, но не сохраняем в БД
-        self.object.save()  # Сохраняем объект, чтобы получить id
+        self.object = form.save(commit=False)
+        self.object.save()
 
-        # Сохраняем связи ManyToMany (продукты)
         form.save_m2m()
 
-        # Пересчитываем total_price (вызовет метод save модели Order)
         self.object.calculate_total_price()
         self.object.save()
 

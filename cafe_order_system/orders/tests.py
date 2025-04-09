@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.urls import reverse
 from .models import Order, Table, Product
 
@@ -33,21 +33,13 @@ class OrderListViewTest(BaseTestCase):
 
         self.assertEqual(order_from_context.status, "waiting")
 
-        # 5. Проверка связанного стола
-        self.assertEqual(
-            order_from_context.table_number.id, self.table.id
-        )  # Проверяем id стола
-        self.assertEqual(
-            order_from_context.table_number.number, 1
-        )  # Проверяем номер стола
+        self.assertEqual(order_from_context.table_number.id, self.table.id)
+        self.assertEqual(order_from_context.table_number.number, 1)
 
-        # 6. Проверка продуктов в заказе
         products_in_order = order_from_context.products.all()
-        self.assertEqual(products_in_order.count(), 1)  # Проверяем количество продуктов
-        self.assertEqual(
-            products_in_order[0].id, self.product.id
-        )  # Проверяем id продукта
-        self.assertEqual(products_in_order[0].name, "Маргарита")  # Проверяем название
+        self.assertEqual(products_in_order.count(), 1)
+        self.assertEqual(products_in_order[0].id, self.product.id)
+        self.assertEqual(products_in_order[0].name, "Маргарита")
 
     def test_order_total_price_calculation(self):
         self.order.calculate_total_price()
@@ -140,9 +132,7 @@ class OrderDeleteViewTest(BaseTestCase):
             reverse("orders:order_delete", args=(self.order.id,))
         )
 
-        # Обновляем объект из базы данных
         self.order.refresh_from_db()
 
-        # Проверяем что заказ архивирован, а не удален
         self.assertTrue(self.order.archived)
         self.assertRedirects(response, reverse("orders:order_list"))

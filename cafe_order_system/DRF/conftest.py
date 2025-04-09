@@ -31,7 +31,7 @@ def product2(db):
 def order(db, table, product1, product2):
     """Фикстура для создания заказа с продуктами."""
     order = Order.objects.create(table_number=table, status="waiting")
-    order.products.set([product1, product2])  # Добавляем продукты в заказ
-    order.calculate_total_price()  # Обновляем стоимость заказа
+    order.products.set([product1, product2])
+    order.calculate_total_price()
     order.save()
     return order
