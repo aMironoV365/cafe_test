@@ -19,10 +19,10 @@
 
 1. Клонируйте репозиторий:
 
-   ```bash
-   git clone https://github.com/aMironoV365/cafe_test.git
-   cd cafe_test
-   ```
+```bash
+git clone https://github.com/aMironoV365/cafe_test.git
+cd cafe_test
+```
 
 2. Создайте и активируйте виртуальное окружение:
 ```bash
