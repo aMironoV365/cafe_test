@@ -14,6 +14,8 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(self.style.SUCCESS(f"Created table: {table.number}"))
             else:
-                self.stdout.write(self.style.WARNING(f"Table already exists: {table.number}"))
+                self.stdout.write(
+                    self.style.WARNING(f"Table already exists: {table.number}")
+                )
 
         self.stdout.write(self.style.SUCCESS("Tables loaded successfully!"))
