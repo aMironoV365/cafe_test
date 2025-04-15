@@ -30,7 +30,7 @@ jobs:
     - name: Run unit tests (host)
       run: |
         export PYTHONPATH=$(pwd)/cafe_order_system
-        pytest orders --maxfail=1 --disable-warnings -q  # Запуск юнит-тестов
+        python manage.py test orders  # Запуск юнит-тестов Django
 
     - name: Run tests with coverage (host)
       env:
