@@ -29,8 +29,8 @@ jobs:
 
     - name: Run unit tests (host)
       run: |
-        export PYTHONPATH=$(pwd)/cafe_test/cafe_order_system
-        python manage.py test orders  # Запуск юнит-тестов Django
+        export PYTHONPATH=$(pwd)/cafe_order_system
+        python cafe_order_system/manage.py test orders  # Запуск юнит-тестов Django
 
     - name: Run tests with coverage (host)
       env:
