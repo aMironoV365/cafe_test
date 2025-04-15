@@ -9,7 +9,8 @@ def api_client() -> APIClient:
     Фикстура для API-клиента.
 
     Возвращает:
-        APIClient: Тестовый клиент для отправки HTTP-запросов к DRF-представлениям.
+        APIClient: Тестовый клиент для отправки HTTP-запросов
+        к DRF-представлениям.
     """
     return APIClient()
 
@@ -60,7 +61,8 @@ def order(db, table: Table, product1: Product, product2: Product) -> Order:
         product2 (Product): Второй тестовый продукт.
 
     Возвращает:
-        Order: Заказ, связанный с переданным столом и продуктами, с вычисленной общей стоимостью.
+        Order: Заказ, связанный с переданным столом и продуктами,
+        с вычисленной общей стоимостью.
     """
     order = Order.objects.create(table_number=table, status="waiting")
     order.products.set([product1, product2])

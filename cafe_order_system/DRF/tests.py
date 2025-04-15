@@ -50,7 +50,8 @@ class TestProductAPI:
 
     def test_get_single_product(self, api_client, product1):
         """
-        Тест получения одного продукта по ID через GET-запрос к /api/products/<id>/
+        Тест получения одного продукта по ID через GET-запрос
+        к /api/products/<id>/
 
         Проверяется:
         - успешный ответ (код 200)

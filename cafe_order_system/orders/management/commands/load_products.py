@@ -25,7 +25,9 @@ class Command(BaseCommand):
                 )
             else:
                 self.stdout.write(
-                    self.style.WARNING(f"Product already exists: {product.name}")
+                    self.style.WARNING(
+                        f"Product already exists: {product.name}"
+                    )
                 )
 
         self.stdout.write(self.style.SUCCESS("Products loaded successfully!"))

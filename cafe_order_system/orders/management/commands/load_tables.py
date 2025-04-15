@@ -12,7 +12,9 @@ class Command(BaseCommand):
         for table_number in range(1, 21):  # Номера столов от 1 до 20
             table, created = Table.objects.get_or_create(number=table_number)
             if created:
-                self.stdout.write(self.style.SUCCESS(f"Created table: {table.number}"))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Created table: {table.number}")
+                )
             else:
                 self.stdout.write(
                     self.style.WARNING(f"Table already exists: {table.number}")

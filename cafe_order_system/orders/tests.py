@@ -115,8 +115,12 @@ class OrderDetailViewTest(BaseTestCase):
         self.assertIn("order_details", response.context)
         self.assertEqual(response.context["order_details"].id, self.order.id)
         self.assertEqual(response.context["order_details"].status, "waiting")
-        self.assertEqual(response.context["order_details"].table_number, self.table)
-        self.assertIn(self.product, response.context["order_details"].products.all())
+        self.assertEqual(
+            response.context["order_details"].table_number, self.table
+        )
+        self.assertIn(
+            self.product, response.context["order_details"].products.all()
+        )
 
 
 class OrderUpdateViewTest(BaseTestCase):
@@ -150,8 +154,12 @@ class OrderUpdateViewTest(BaseTestCase):
         self.assertIn("order_update", response.context)
         self.assertEqual(response.context["order_update"].id, self.order.id)
         self.assertEqual(response.context["order_update"].status, "waiting")
-        self.assertEqual(response.context["order_update"].table_number, self.table)
-        self.assertIn(self.product, response.context["order_update"].products.all())
+        self.assertEqual(
+            response.context["order_update"].table_number, self.table
+        )
+        self.assertIn(
+            self.product, response.context["order_update"].products.all()
+        )
 
 
 class OrderDeleteViewTest(BaseTestCase):
@@ -185,8 +193,12 @@ class OrderDeleteViewTest(BaseTestCase):
         self.assertIn("order_delete", response.context)
         self.assertEqual(response.context["order_delete"].id, self.order.id)
         self.assertEqual(response.context["order_delete"].status, "waiting")
-        self.assertEqual(response.context["order_delete"].table_number, self.table)
-        self.assertIn(self.product, response.context["order_delete"].products.all())
+        self.assertEqual(
+            response.context["order_delete"].table_number, self.table
+        )
+        self.assertIn(
+            self.product, response.context["order_delete"].products.all()
+        )
 
     def test_delete_order_post_request(self) -> None:
         """

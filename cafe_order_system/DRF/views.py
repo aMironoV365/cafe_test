@@ -12,7 +12,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     Используемые классы:
     - queryset: все объекты Product
-    - serializer_class: сериализатор, определяющий структуру входных/выходных данных
+    - serializer_class: сериализатор, определяющий структуру
+      входных/выходных данных
     """
 
     queryset = Product.objects.all()
